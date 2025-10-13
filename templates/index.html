@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship Management System</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🚢 Ship Management System</h1>
+            <p>Manage your fleet with ease</p>
+        </header>
+
+        <!-- Add Ship Form -->
+        <div class="card">
+            <h2>Add New Ship</h2>
+            <form id="addShipForm" class="ship-form">
+                <div class="form-group">
+                    <label for="name">Ship Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="displacement">Displacement (tons)</label>
+                    <input type="number" id="displacement" name="displacement" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="port">Home Port</label>
+                    <input type="text" id="port" name="port" required>
+                </div>
+                <div class="form-group">
+                    <label for="captain">Captain</label>
+                    <input type="text" id="captain" name="captain" required>
+                </div>
+                <div class="form-group">
+                    <label for="berth_num">Berth Number</label>
+                    <input type="number" id="berth_num" name="berth_num" required>
+                </div>
+                <div class="form-group">
+                    <label for="target">Destination/Target</label>
+                    <input type="text" id="target" name="target" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Ship</button>
+            </form>
+        </div>
+
+        <!-- Ships List -->
+        <div class="card">
+            <h2>Fleet Overview</h2>
+            <div id="shipsList" class="ships-list">
+                <div class="loading">Loading ships...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Ship Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Ship</h2>
+            <form id="editShipForm" class="ship-form">
+                <input type="hidden" id="editId">
+                <div class="form-group">
+                    <label for="editName">Ship Name</label>
+                    <input type="text" id="editName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDisplacement">Displacement (tons)</label>
+                    <input type="number" id="editDisplacement" name="displacement" step="0.1" required>
+                </div>
+                <div class="form-group">
+                    <label for="editPort">Home Port</label>
+                    <input type="text" id="editPort" name="port" required>
+                </div>
+                <div class="form-group">
+                    <label for="editCaptain">Captain</label>
+                    <input type="text" id="editCaptain" name="captain" required>
+                </div>
+                <div class="form-group">
+                    <label for="editBerthNum">Berth Number</label>
+                    <input type="number" id="editBerthNum" name="berth_num" required>
+                </div>
+                <div class="form-group">
+                    <label for="editTarget">Destination/Target</label>
+                    <input type="text" id="editTarget" name="target" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="static/script.js"></script>
+</body>
+</html>
