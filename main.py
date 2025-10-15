@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
 from docx import Document
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 from io import BytesIO
 from typing import List, Dict
 from models import Ship, CreateShip
@@ -19,7 +21,7 @@ async def read_root():
 async def get_ships() -> List:
     return ship_list
 
-@app.get("/ships/download")
+@app.get("/ships/download_word")
 async def export_ships_to_word():
     try:
         if not ship_list:
@@ -105,7 +107,7 @@ async def delete_ship(ship_id: int) -> Dict:
             return {"data": "ship deleted"} 
     raise HTTPException(status_code=404, detail="ship not found")
 
-@app.get("/ships/download/{ship_id}")
+@app.get("/ships/download_word/{ship_id}")
 async def export_ship_to_word(ship_id: int):
     try:
         for ship in ship_list:
@@ -145,3 +147,95 @@ async def export_ship_to_word(ship_id: int):
     except Exception as e:
         print(f"Error in export_ship_to_word: {e}")
         raise HTTPException(status_code=500, detail=f"Error generating ship report: {str(e)}")
+
+
+@app.get("/ships/download_excel/{ship_id}")
+async def export_ship_to_excel(ship_id: int):
+    try:
+        for ship in ship_list:
+            if ship_id == ship.id:
+                wb = Workbook()
+                ws = wb.active
+                ws.title = "Ship Information"
+
+                # Добавляем название таблицы
+                ws['A1'] = f"Ship Report: {ship.name}"
+                title_cell = ws['A1']
+                title_cell.font = Font(size=14, bold=True)
+                ws.merge_cells('A1:G1')  # Объединяем ячейки для заголовка
+                ws.row_dimensions[1].height = 25  # Высота строки для заголовка
+
+                # Пропускаем строку после заголовка
+                current_row = 3
+
+                # Добавляем заголовки таблицы
+                headers = ["ID", "Ship Name", "Displacement", "Home Port", "Captain", "Berth Number", "Destination"]
+                for col, header in enumerate(headers, 1):
+                    cell = ws.cell(row=current_row, column=col, value=header)
+                    cell.font = Font(bold=True)
+                    cell.fill = PatternFill(start_color="DDDDDD", end_color="DDDDDD", fill_type="solid")
+                    cell.border = Border(
+                        left=Side(style='thin'),
+                        right=Side(style='thin'),
+                        top=Side(style='thin'),
+                        bottom=Side(style='thin')
+                    )
+
+                # Добавляем данные корабля
+                current_row += 1
+                ship_data = [
+                    ship.id,
+                    ship.name,
+                    f"{ship.displacement} tons",
+                    ship.port,
+                    ship.captain,
+                    ship.berth_num,
+                    ship.target
+                ]
+
+                for col, value in enumerate(ship_data, 1):
+                    cell = ws.cell(row=current_row, column=col, value=value)
+                    cell.border = Border(
+                        left=Side(style='thin'),
+                        right=Side(style='thin'),
+                        top=Side(style='thin'),
+                        bottom=Side(style='thin')
+                    )
+
+                # Автоматическое выравнивание ширины столбцов
+                for column in ws.columns:
+                    max_length = 0
+                    column_letter = column[0].column_letter
+                    for cell in column:
+                        try:
+                            if len(str(cell.value)) > max_length:
+                                max_length = len(str(cell.value))
+                        except:
+                            pass
+                    adjusted_width = min((max_length + 2), 50)  # Максимальная ширина 50
+                    ws.column_dimensions[column_letter].width = adjusted_width
+
+                # Выравнивание заголовка по центру
+                ws['A1'].alignment = Alignment(horizontal='center', vertical='center')
+
+                # Выравнивание всех ячеек по центру
+                for row in ws.iter_rows(min_row=3, max_row=current_row):
+                    for cell in row:
+                        cell.alignment = Alignment(horizontal='center', vertical='center')
+
+                buffer = BytesIO()
+                wb.save(buffer)
+                buffer.seek(0)
+
+                filename = f"ship_{ship.id}_report.xlsx"
+
+                return Response(
+                    content=buffer.getvalue(),
+                    media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    headers={'Content-Disposition': f'attachment; filename="{filename}"'}
+                )
+
+        raise HTTPException(status_code=404, detail="Ship not found")
+    except Exception as e:
+        print(f"Error in export_ship_to_excel: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating Excel report: {str(e)}")
