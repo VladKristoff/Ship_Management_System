@@ -234,6 +234,12 @@
             margin-top: 20px;
         }
 
+        .export-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
         @media (max-width: 768px) {
             .form-grid {
                 grid-template-columns: 1fr;
@@ -244,6 +250,10 @@
             }
             
             .ship-actions {
+                flex-direction: column;
+            }
+            
+            .export-buttons {
                 flex-direction: column;
             }
         }
@@ -292,7 +302,10 @@
         <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2>Fleet Overview</h2>
-                <button class="btn btn-export" onclick="shipManager.exportAllShips()">Export All to Word</button>
+                <div class="export-buttons">
+                    <button class="btn btn-export" onclick="shipManager.exportAllShipsWord()">Export All to Word</button>
+                    <button class="btn btn-export" onclick="shipManager.exportAllShipsExcel()">Export All to Excel</button>
+                </div>
             </div>
             <div id="shipsList" class="ships-grid">
                 <div class="empty-state">Loading ships...</div>
@@ -422,7 +435,8 @@
                         </div>
                         <div class="ship-actions">
                             <button class="btn btn-edit" onclick="shipManager.editShip(${ship.id})">Edit</button>
-                            <button class="btn btn-export" onclick="shipManager.exportShip(${ship.id})">Export</button>
+                            <button class="btn btn-export" onclick="shipManager.exportShipWord(${ship.id})">Export Word</button>
+                            <button class="btn btn-export" onclick="shipManager.exportShipExcel(${ship.id})">Export Excel</button>
                             <button class="btn btn-delete" onclick="shipManager.deleteShip(${ship.id})">Delete</button>
                         </div>
                     </div>
@@ -535,9 +549,9 @@
                 }
             }
 
-            async exportShip(shipId) {
+            async exportShipWord(shipId) {
                 try {
-                    const response = await fetch(`/ships/download/${shipId}`);
+                    const response = await fetch(`/ships/download_word/${shipId}`);
                     if (response.ok) {
                         const blob = await response.blob();
                         const url = window.URL.createObjectURL(blob);
@@ -549,17 +563,39 @@
                         window.URL.revokeObjectURL(url);
                         document.body.removeChild(a);
                     } else {
-                        throw new Error('Failed to export ship');
+                        throw new Error('Failed to export ship to Word');
                     }
                 } catch (error) {
-                    console.error('Error exporting ship:', error);
-                    alert('Failed to export ship');
+                    console.error('Error exporting ship to Word:', error);
+                    alert('Failed to export ship to Word');
                 }
             }
 
-            async exportAllShips() {
+            async exportShipExcel(shipId) {
                 try {
-                    const response = await fetch('/ships/download');
+                    const response = await fetch(`/ships/download_excel/${shipId}`);
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `ship_${shipId}_report.xlsx`;
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    } else {
+                        throw new Error('Failed to export ship to Excel');
+                    }
+                } catch (error) {
+                    console.error('Error exporting ship to Excel:', error);
+                    alert('Failed to export ship to Excel');
+                }
+            }
+
+            async exportAllShipsWord() {
+                try {
+                    const response = await fetch('/ships/download_word');
                     if (response.ok) {
                         const blob = await response.blob();
                         const url = window.URL.createObjectURL(blob);
@@ -571,11 +607,33 @@
                         window.URL.revokeObjectURL(url);
                         document.body.removeChild(a);
                     } else {
-                        throw new Error('Failed to export fleet');
+                        throw new Error('Failed to export fleet to Word');
                     }
                 } catch (error) {
-                    console.error('Error exporting fleet:', error);
-                    alert('Failed to export fleet');
+                    console.error('Error exporting fleet to Word:', error);
+                    alert('Failed to export fleet to Word');
+                }
+            }
+
+            async exportAllShipsExcel() {
+                try {
+                    const response = await fetch('/ships/download_excel');
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'ship_fleet_report.xlsx';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    } else {
+                        throw new Error('Failed to export fleet to Excel');
+                    }
+                } catch (error) {
+                    console.error('Error exporting fleet to Excel:', error);
+                    alert('Failed to export fleet to Excel');
                 }
             }
 
