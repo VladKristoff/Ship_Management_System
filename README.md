@@ -26,10 +26,8 @@
 ### 🖼️ Скриншоты интерфейса
 🏠 Основное меню управления
 
-<img width="765" height="619" alt="image" src="https://github.com/user-attachments/assets/5bb1366b-d325-4b61-ab69-95f9017694a4" />
-
+<img width="500" alt="Основное меню" src="https://github.com/user-attachments/assets/5f267a98-88c2-44c4-9ff6-694bc20b28f1" />
 
 ✏️ Меню редактирования
 
-<img width="500" alt="image" src="https://github.com/user-attachments/assets/6b65a5ab-a5e9-4354-80bb-f31d79ce3b4f" />
-
+<img width="500" alt="Редактирование корабля" src="https://github.com/user-attachments/assets/9e54ce02-457a-43d5-880e-e76474a14893" />

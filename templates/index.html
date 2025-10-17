@@ -6,14 +6,16 @@
     <title>Ship Management</title>
     <style>
         :root {
-            --primary: #1e88e5;
-            --primary-dark: #1565c0;
-            --secondary: #4fc3f7;
-            --dark: #263238;
-            --light: #f5f5f5;
-            --gray: #90a4ae;
-            --success: #4caf50;
-            --danger: #f44336;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #10b981;
+            --secondary-dark: #059669;
+            --dark: #374151;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
         }
 
         * {
@@ -23,49 +25,59 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             color: var(--dark);
             min-height: 100vh;
             padding: 20px;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
-            padding: 20px;
+            padding: 20px 0;
         }
 
         .header h1 {
             color: var(--primary-dark);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: var(--gray);
+            font-size: 1rem;
         }
 
         .card {
             background: white;
-            border-radius: 10px;
-            padding: 25px;
+            border-radius: 8px;
+            padding: 20px;
             margin-bottom: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
         }
 
         .card h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            border-bottom: 2px solid var(--secondary);
+            color: var(--dark);
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 15px;
             padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
             margin-bottom: 15px;
         }
 
@@ -75,30 +87,38 @@
         }
 
         label {
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: var(--dark);
             font-weight: 500;
+            font-size: 0.875rem;
         }
 
         input {
-            padding: 10px;
-            border: 1px solid var(--gray);
-            border-radius: 5px;
-            font-size: 1rem;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
         }
 
         input:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 8px 16px;
             border: none;
-            border-radius: 5px;
-            font-size: 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
         }
 
         .btn-primary {
@@ -112,20 +132,29 @@
 
         .btn-export {
             background: var(--secondary);
-            color: var(--dark);
+            color: white;
         }
 
         .btn-export:hover {
-            background: #29b6f6;
+            background: var(--secondary-dark);
+        }
+
+        .btn-word {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-word:hover {
+            background: #2563eb;
         }
 
         .btn-edit {
-            background: #ffb300;
+            background: var(--warning);
             color: white;
         }
 
         .btn-edit:hover {
-            background: #ffa000;
+            background: #d97706;
         }
 
         .btn-delete {
@@ -134,38 +163,46 @@
         }
 
         .btn-delete:hover {
-            background: #d32f2f;
+            background: #dc2626;
         }
 
         .ships-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
         }
 
         .ship-card {
             background: white;
             border-radius: 8px;
-            padding: 20px;
-            border-left: 4px solid var(--primary);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ship-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .ship-card h3 {
             color: var(--primary-dark);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+            margin-bottom: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
         }
 
         .ship-info {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .ship-field {
             display: flex;
             justify-content: space-between;
-            padding: 5px 0;
-            border-bottom: 1px solid #eee;
+            padding: 4px 0;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 0.875rem;
         }
 
         .ship-field:last-child {
@@ -179,20 +216,23 @@
 
         .ship-actions {
             display: flex;
-            gap: 10px;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .ship-actions .btn {
             flex: 1;
-            padding: 8px 12px;
-            font-size: 0.9rem;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            min-width: 60px;
         }
 
         .empty-state {
             text-align: center;
-            padding: 40px;
+            padding: 30px;
             color: var(--gray);
             grid-column: 1 / -1;
+            font-size: 0.875rem;
         }
 
         .modal {
@@ -204,40 +244,68 @@
             height: 100%;
             background: rgba(0,0,0,0.5);
             z-index: 1000;
+            backdrop-filter: blur(2px);
         }
 
         .modal-content {
             background: white;
-            margin: 50px auto;
-            padding: 25px;
-            border-radius: 10px;
+            margin: 40px auto;
+            padding: 20px;
+            border-radius: 8px;
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .modal-header h2 {
+            color: var(--dark);
+            font-size: 1.25rem;
+            font-weight: 600;
         }
 
         .close {
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
             color: var(--gray);
+            padding: 5px;
+        }
+
+        .close:hover {
+            color: var(--dark);
         }
 
         .form-actions {
             display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .export-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
             gap: 10px;
-            margin-top: 20px;
         }
 
         .export-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
+        }
+
+        .export-buttons .btn {
+            padding: 6px 12px;
+            font-size: 0.8rem;
         }
 
         @media (max-width: 768px) {
@@ -250,12 +318,31 @@
             }
             
             .ship-actions {
+                flex-direction: row;
+            }
+            
+            .export-section {
                 flex-direction: column;
+                align-items: stretch;
             }
             
             .export-buttons {
-                flex-direction: column;
+                justify-content: stretch;
             }
+            
+            .export-buttons .btn {
+                flex: 1;
+            }
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -300,10 +387,10 @@
         </div>
 
         <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div class="export-section">
                 <h2>Fleet Overview</h2>
                 <div class="export-buttons">
-                    <button class="btn btn-export" onclick="shipManager.exportAllShipsWord()">Export All to Word</button>
+                    <button class="btn btn-word" onclick="shipManager.exportAllShipsWord()">Export All to Word</button>
                     <button class="btn btn-export" onclick="shipManager.exportAllShipsExcel()">Export All to Excel</button>
                 </div>
             </div>
@@ -349,7 +436,7 @@
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <button type="button" class="btn" onclick="shipManager.closeModal()" style="background: #ccc;">Cancel</button>
+                    <button type="button" class="btn" onclick="shipManager.closeModal()" style="background: #9ca3af; color: white;">Cancel</button>
                 </div>
             </form>
         </div>
@@ -387,12 +474,15 @@
 
             async loadShips() {
                 try {
+                    const container = document.getElementById('shipsList');
+                    container.innerHTML = '<div class="empty-state">Loading ships...</div>';
+                    
                     const response = await fetch(this.apiBase);
                     const ships = await response.json();
                     this.displayShips(ships);
                 } catch (error) {
                     console.error('Error loading ships:', error);
-                    alert('Failed to load ships');
+                    this.showError('Failed to load ships');
                 }
             }
 
@@ -435,8 +525,8 @@
                         </div>
                         <div class="ship-actions">
                             <button class="btn btn-edit" onclick="shipManager.editShip(${ship.id})">Edit</button>
-                            <button class="btn btn-export" onclick="shipManager.exportShipWord(${ship.id})">Export Word</button>
-                            <button class="btn btn-export" onclick="shipManager.exportShipExcel(${ship.id})">Export Excel</button>
+                            <button class="btn btn-word" onclick="shipManager.exportShipWord(${ship.id})">Word</button>
+                            <button class="btn btn-export" onclick="shipManager.exportShipExcel(${ship.id})">Excel</button>
                             <button class="btn btn-delete" onclick="shipManager.deleteShip(${ship.id})">Delete</button>
                         </div>
                     </div>
@@ -446,6 +536,7 @@
             async addShip() {
                 const form = document.getElementById('addShipForm');
                 const formData = new FormData(form);
+                const button = form.querySelector('button[type="submit"]');
                 
                 const shipData = {
                     name: formData.get('name'),
@@ -457,6 +548,9 @@
                 };
 
                 try {
+                    button.disabled = true;
+                    button.textContent = 'Adding...';
+
                     const response = await fetch(this.apiBase, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
@@ -466,13 +560,16 @@
                     if (response.ok) {
                         form.reset();
                         this.loadShips();
-                        alert('Ship added successfully!');
+                        this.showSuccess('Ship added successfully!');
                     } else {
                         throw new Error('Failed to add ship');
                     }
                 } catch (error) {
                     console.error('Error adding ship:', error);
-                    alert('Failed to add ship');
+                    this.showError('Failed to add ship');
+                } finally {
+                    button.disabled = false;
+                    button.textContent = 'Add Ship';
                 }
             }
 
@@ -492,13 +589,14 @@
                     this.openModal();
                 } catch (error) {
                     console.error('Error loading ship for edit:', error);
-                    alert('Failed to load ship data');
+                    this.showError('Failed to load ship data');
                 }
             }
 
             async updateShip() {
                 const shipId = document.getElementById('editId').value;
                 const formData = new FormData(document.getElementById('editShipForm'));
+                const button = document.querySelector('#editShipForm button[type="submit"]');
                 
                 const shipData = {
                     name: formData.get('name'),
@@ -510,6 +608,9 @@
                 };
 
                 try {
+                    button.disabled = true;
+                    button.textContent = 'Saving...';
+
                     const response = await fetch(`${this.apiBase}/${shipId}`, {
                         method: 'PUT',
                         headers: {'Content-Type': 'application/json'},
@@ -519,13 +620,16 @@
                     if (response.ok) {
                         this.closeModal();
                         this.loadShips();
-                        alert('Ship updated successfully!');
+                        this.showSuccess('Ship updated successfully!');
                     } else {
                         throw new Error('Failed to update ship');
                     }
                 } catch (error) {
                     console.error('Error updating ship:', error);
-                    alert('Failed to update ship');
+                    this.showError('Failed to update ship');
+                } finally {
+                    button.disabled = false;
+                    button.textContent = 'Save Changes';
                 }
             }
 
@@ -539,13 +643,13 @@
 
                     if (response.ok) {
                         this.loadShips();
-                        alert('Ship deleted successfully!');
+                        this.showSuccess('Ship deleted successfully!');
                     } else {
                         throw new Error('Failed to delete ship');
                     }
                 } catch (error) {
                     console.error('Error deleting ship:', error);
-                    alert('Failed to delete ship');
+                    this.showError('Failed to delete ship');
                 }
             }
 
@@ -567,7 +671,7 @@
                     }
                 } catch (error) {
                     console.error('Error exporting ship to Word:', error);
-                    alert('Failed to export ship to Word');
+                    this.showError('Failed to export ship to Word');
                 }
             }
 
@@ -589,7 +693,7 @@
                     }
                 } catch (error) {
                     console.error('Error exporting ship to Excel:', error);
-                    alert('Failed to export ship to Excel');
+                    this.showError('Failed to export ship to Excel');
                 }
             }
 
@@ -611,7 +715,7 @@
                     }
                 } catch (error) {
                     console.error('Error exporting fleet to Word:', error);
-                    alert('Failed to export fleet to Word');
+                    this.showError('Failed to export fleet to Word');
                 }
             }
 
@@ -633,7 +737,7 @@
                     }
                 } catch (error) {
                     console.error('Error exporting fleet to Excel:', error);
-                    alert('Failed to export fleet to Excel');
+                    this.showError('Failed to export fleet to Excel');
                 }
             }
 
@@ -643,6 +747,14 @@
 
             closeModal() {
                 document.getElementById('editModal').style.display = 'none';
+            }
+
+            showSuccess(message) {
+                alert(message); // Можно заменить на более красивый toast
+            }
+
+            showError(message) {
+                alert(message); // Можно заменить на более красивый toast
             }
         }
 
