@@ -26,7 +26,7 @@
 ### 🖼️ Скриншоты интерфейса
 🏠 Основное меню управления
 
-<img width="500" alt="Основное меню" src="https://github.com/user-attachments/assets/5f267a98-88c2-44c4-9ff6-694bc20b28f1" />
+<img width="765" height="619" alt="image" src="https://github.com/user-attachments/assets/5bb1366b-d325-4b61-ab69-95f9017694a4" />
 
 ✏️ Меню редактирования
 
